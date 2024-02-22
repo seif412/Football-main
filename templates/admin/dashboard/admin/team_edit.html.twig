@@ -1,0 +1,33 @@
+{% extends '@EasyAdmin/crud/edit.html.twig' %}
+
+{% block page_title %}
+	{% if page_title is defined %}
+		{{ page_title|trans(easyadmin_get_trans_domain(), {}, translation_domain) }}
+	{% else %}
+		{% if action|default('') == 'edit' %}
+			{{ 'edit.page_title'|trans(easyadmin_get_trans_domain(), {'%entity_label_singular%': entity_label_in_singular}) }}
+		{% else %}
+			{{ 'new.page_title'|trans(easyadmin_get_trans_domain(), {'%entity_label_singular%': entity_label_in_singular}) }}
+		{% endif %}
+	{% endif %}
+{% endblock %}
+
+{% block page_actions %}
+	{{ parent() }}
+	{% if not is_granted('ROLE_USER') %}
+		<a href="{{ path('app_admin_team_index') }}" class="btn btn-primary ml-2">
+			<i class="fa fa-list mr-1"></i>Back to list
+		</a>
+	{% endif %}
+{% endblock %}
+
+{% block form_widget_logo %}
+	{{ parent() }}
+	{{ form_widget(form.logo, {'attr': {'accept': 'image/*'}}) }}
+	{% if form.vars.value is not empty %}
+		<div class="form-group">
+			<label>Current Logo</label><br>
+			<img src="{{ asset(form.vars.value) }}" alt="Current Logo" style="max-width: 200px;">
+		</div>
+	{% endif %}
+{% endblock %}
